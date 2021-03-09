@@ -1,0 +1,18 @@
+#!/usr/bin/with-contenv bash
+
+# none of su/sudo/runuser/s6-setuidgid/etc/etc/etc actually change HOME
+# to the home of the user you run as. Setting manually while keeping 
+
+echo "-----------------------------------------------------------"
+echo "Running code-server as: ${USER_NAME}"
+su - ${USER_NAME} -c 'id'
+echo "-----------------------------------------------------------"
+#echo "# s6-setuidgid $USER /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 $HOME"
+#s6-setuidgid ${USER_NAME} /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 ${USER_HOME}
+
+su - ${USER_NAME} -c '
+    /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 ${HOME}
+'
+
+
+
