@@ -22,7 +22,7 @@ build_tag="${VERSION}"
 echo "Build Tag: ${build_tag}"
 
 
-docker build --pull -t ericsgagnon/code-server:${build_tag}  -f Dockerfile . 
+docker build --pull --no-cache=true -t ericsgagnon/code-server:${build_tag}  -f Dockerfile . 
 build_exit_code=$?
 
 if [[ $build_exit_code -ne 0 ]] ; then

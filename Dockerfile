@@ -11,12 +11,8 @@ RUN curl -fsSL https://code-server.dev/install.sh | bash -s -- --method=standalo
 
 COPY code-server-run /etc/services.d/code-server/run
 
-EXPOSE 8080
-
-
-ENV SERVICE_URL=https://open-vsx.org/vscode/gallery
-ENV ITEM_URL=https://open-vsx.org/vscode/item
-
 ENV SERVICE_URL=https://marketplace.visualstudio.com/_apis/public/gallery
 ENV ITEM_URL=https://marketplace.visualstudio.com/items
+
+EXPOSE 8080
 
