@@ -7,6 +7,8 @@ FROM ericsgagnon/ide-base:${VERSION} as base
 ENV WORKSPACE="/tmp/workspace/code-server"
 COPY . ${WORKSPACE}/
 
+RUN apt-get update && apt-get upgrade -y
+
 RUN curl -fsSL https://code-server.dev/install.sh | bash -s -- --method=standalone --prefix=/usr/local
 
 COPY code-server-run /etc/services.d/code-server/run

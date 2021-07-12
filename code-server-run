@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# none of su/sudo/runuser/s6-setuidgid/etc/etc/etc actually change HOME
-# to the home of the user you run as. Setting manually while keeping 
-
-# tmp_dir=$(mktemp)
-# cat /etc/cont-init.d/001-userconf.sh  | grep -E "^export USER_NAME" | envsubst
-# source /etc/profile.d/0000-env.sh
-
 # grab the username
 source /etc/profile.d/0000-env.sh
 eval $(cat /etc/cont-init.d/001-userconf.sh  | grep -E "^export USER_NAME" | envsubst)
@@ -18,9 +11,14 @@ echo "-----------------------------------------------------------"
 #echo "# s6-setuidgid $USER /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 $HOME"
 #s6-setuidgid ${USER_NAME} /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 ${USER_HOME}
 
-su - ${USER_NAME} -c '
-    /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 ${HOME}
-'
-
-
+# override password/hashed password for code-server
+if [[ ${CODE_SERVER_NO_PASSWORD} ]] ; then
+    su - ${USER_NAME} -c '
+        /usr/local/bin/code-server --disable-update-check --auth none --bind-addr 0.0.0.0:8080 ${HOME}
+    '
+else
+    su - ${USER_NAME} -c '
+        /usr/local/bin/code-server --disable-update-check --bind-addr 0.0.0.0:8080 ${HOME}
+    '
+fi
 
